@@ -1,6 +1,22 @@
 # CSV 2 JSON
 
-Usage: index [options] <csvFilePath> [outPutPath]
+## install
+
+```
+git clone https://github.com/oxo-yuta/csv2json.git
+npm install
+```
+
+## run
+
+```
+npm start <CSV file Path> [Output file Path]
+```
+
+## detail
+
+```
+Usage: npm start <csvFilePath> [outPutPath]
 
 Arguments:
   csvFilePath    path to input CSV file
@@ -14,3 +30,4 @@ Options:
 
 Example call:
   $ npm start input.csv output.json
+```
