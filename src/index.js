@@ -1,4 +1,6 @@
 const { Command } = require('commander');
+const createObjectCsvWriter = require('csv-writer').createObjectCsvWriter;
+
 const program = new Command();
 program.version('0.0.1');
 
@@ -17,7 +19,10 @@ Example call:
 
 async function createJson(csvFilePath, outPutPath){
   const csv = require('csvtojson')
-  const jsonArray=await csv().fromFile(csvFilePath)
+  const jsonArray = await csv().fromFile(csvFilePath)
+  for(const data of jsonArray) {
+    data.json = JSON.stringify(data)
+  }
   const fs = require('fs')
   if (!outPutPath){
     const split_path = csvFilePath.match(/(.*\/)?(.*?)\.(\w+)?/)
@@ -25,10 +30,17 @@ async function createJson(csvFilePath, outPutPath){
     if(split_path[1]) {
       outPutPath += split_path[1] + '/'
     }
-    outPutPath += split_path[2] + '.json'
+    outPutPath += split_path[2] + '_json.csv'
   }
-  fs.writeFile(outPutPath, JSON.stringify(jsonArray, null, '    '), (err) => {
-    if (err) throw err;
-    console.log('Done')
+  const res = await createCSV(jsonArray, outPutPath)
+  console.log( `OUTPUT: ${res}` )
+}
+
+async function createCSV(data, csvFilePath) {
+  const csvWriter2 = createObjectCsvWriter({
+    path: csvFilePath,
+    header: Object.keys(data[0]).map(v => ({ id: v, title: v }))
   })
+  await csvWriter2.writeRecords(data)
+  return csvFilePath
 }
