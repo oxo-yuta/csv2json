@@ -3,6 +3,7 @@
 ## install
 
 ```
+git clone https://github.com/oxo-yuta/csv2json.git
 npm install
 ```
 
